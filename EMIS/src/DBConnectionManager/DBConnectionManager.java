@@ -33,7 +33,6 @@ public class DBConnectionManager {
         return !(connection==null);
     }
 
-
     /**
      * 将新注册的用户信息更新至数据库
      * @param user
@@ -211,6 +210,12 @@ public class DBConnectionManager {
         }
     }
 
+    /**
+     * 查找数据库中是否有指定employee_id
+     * @param employee_id
+     * @return,若数据库中有指定employee_id,返回false，否则返回true
+     * @throws SQLException
+     */
     public static boolean checkEmployeeID(int employee_id) throws SQLException{
         boolean res=true;
         String sql_checkID="select employee_id from employee where employee_id=?";
@@ -226,9 +231,14 @@ public class DBConnectionManager {
         return res;
     }
 
+    /**
+     * 检查是否有部门部长冲突
+     * @param employee
+     * @return若有部长冲突，返回true，否则返回false
+     * @throws SQLException
+     */
     public static boolean checkDepartmentalConflict(Employee employee) throws SQLException{
         boolean res=false;
-
         //查询job表的相应信息
         String sql_job="select job_id,max_salary,min_salary from job where job_title=?";
         preparedStatement=connection.prepareStatement(sql_job);
@@ -272,6 +282,13 @@ public class DBConnectionManager {
         return res;
     }
 
+    /**
+     * 向数据库中插入新员工信息
+     * @param employee
+     * @return若返回值大于0，则表示插入成功，否则插入失败
+     * @throws SQLException
+     * @throws FileNotFoundException
+     */
     public static int updateEmployee(Employee employee) throws SQLException, FileNotFoundException {
         //查询edu_id
         String sql_edu="select edu_id\n" +
@@ -310,6 +327,13 @@ public class DBConnectionManager {
         return ins_result;
     }
 
+    /**
+     * 在插入新员工后，可能对其他员工的某些信息字段产生影响，所以可能需要更新其他员工的信息，
+     * 本方法作为辅助方法使用，不需要主动调用
+     * @param employee
+     * @return
+     * @throws SQLException
+     */
     public static int updateOtherEmployee(Employee employee) throws SQLException{
         //更新员工表
         String sql_upd_emp="update employee\n" +
@@ -329,6 +353,13 @@ public class DBConnectionManager {
         return upd_res;
     }
 
+    /**
+     * 插入员工后，可能员工的职称是部长，所以也要同步更新部门表
+     * 本方法作为辅助方法使用，不需要主动调用
+     * @param employee
+     * @return
+     * @throws SQLException
+     */
     public static int updateDepartment(Employee employee) throws SQLException{
         //更新department表
         String sql_upd_dep="update department\n" +
@@ -343,6 +374,12 @@ public class DBConnectionManager {
         return upd_res;
     }
 
+    /**
+     * 检查薪资是否符合要求
+     * @param id
+     * @param salary
+     * @return
+     */
     public static boolean checkSalary(int id,double salary){
         boolean res=false;
         String sql="select max_salary,min_salary\n" +
@@ -364,6 +401,11 @@ public class DBConnectionManager {
         }
     }
 
+    /**
+     * 对数据库中的信息进行修改更新
+     * @param e
+     * @return
+     */
     public static int modifyInfoToDB(Employee e){
         int rst_upd=0;
         String sql_sel="select edu_id\n" +
@@ -400,6 +442,10 @@ public class DBConnectionManager {
         }
     }
 
+    /**
+     * 将数据库中的员工信息读取出来，并以ArrayList进行组织
+     * @return返回一个封装了数据的ArrayList
+     */
     public static ArrayList<Object[]> getTableList() {
         ArrayList<Object[]> als=new ArrayList<>();
         try {
@@ -437,6 +483,11 @@ public class DBConnectionManager {
         preparedStatement.setString(4,e.getDepartment_name());
     }
 
+    /**
+     * 从数据库中删除员工信息
+     * @param id,根据id查找待删除的员工
+     * @return
+     */
     public static boolean deleteInfoFromDB(int id){
         boolean res=false;
         String sql_del="delete \n" +
