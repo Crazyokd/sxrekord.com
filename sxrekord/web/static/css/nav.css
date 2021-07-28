@@ -1,0 +1,42 @@
+
+.profilePhoto{
+	float: left;
+	margin-left: 25px;
+	margin-top: 15px;
+	margin-right: 0px;
+}
+
+.profilePhoto img{
+	border-radius: 25px;
+}
+
+#nickname{
+	float: left;
+	margin-top: 30px;
+	margin-left: 10px;
+	padding: 0px;
+	color: red;
+	font-weight: bold;
+	font-family: 宋体;
+}
+
+.nav{
+	float: left;
+	margin-top: 28px;
+	margin-left: 125px;
+}
+
+.nav_ele{
+	float: left;
+	padding: 0px;
+	margin: 0px 75px;
+}
+
+.nav_ele a{
+	font-weight: bold;
+	text-align: center;
+	vertical-align: center;
+	text-decoration: none;
+	color: yellow;
+}
+
